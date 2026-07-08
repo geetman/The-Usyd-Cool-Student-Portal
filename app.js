@@ -300,14 +300,15 @@
       });
 
       $coverflow.appendChild(tile);
-      // stagger entrance
-      var delay = reduceMotion ? 0 : i * 60;
-      setTimeout(function () {
-        tile.style.opacity = '1';
-      }, delay + 20);
-
       return tile;
     });
+
+    // Staggered pop-in, then settle into correct coverflow formation.
+    tileEls.forEach(function (tile, i) {
+      var delay = reduceMotion ? 0 : i * 60;
+      setTimeout(function () { tile.style.opacity = '1'; }, delay + 20);
+    });
+    setTimeout(layoutCoverflow, reduceMotion ? 0 : tileEls.length * 60 + 60);
   }
 
   function layoutCoverflow() {
@@ -317,15 +318,18 @@
       var delta = i - state.categoryIndex;
       var sign = delta === 0 ? 0 : (delta > 0 ? 1 : -1);
       var abs = Math.abs(delta);
-      var offset = delta * 190;
-      var rotate = sign * 18;
-      var scale = delta === 0 ? 1 : 0.78;
-      var opacity = delta === 0 ? 1 : (abs > 4 ? 0 : 0.55);
+      var offset = delta * 185;
+      // Curved path: tiles sink along a shallow arc as they move away from center,
+      // rather than sliding along a flat horizontal line.
+      var curveY = Math.pow(abs, 1.6) * 16;
+      var rotate = sign * (14 + abs * 2);
+      var scale = delta === 0 ? 1 : Math.max(0.6, 0.78 - abs * 0.04);
+      var opacity = delta === 0 ? 1 : (abs > 4 ? 0 : 0.55 - abs * 0.05);
       var z = 100 - abs;
 
       tile.style.zIndex = z;
-      tile.style.transform = 'translateX(' + offset + 'px) rotateY(' + rotate + 'deg) scale(' + scale + ')';
-      tile.style.opacity = opacity;
+      tile.style.transform = 'translateX(' + offset + 'px) translateY(' + curveY + 'px) rotateY(' + rotate + 'deg) scale(' + scale + ')';
+      tile.style.opacity = Math.max(opacity, 0);
       tile.style.filter = delta === 0 ? 'saturate(1)' : 'saturate(0.35)';
       tile.style.boxShadow = delta === 0 ? '0 0 24px 2px rgba(255,122,26,0.5)' : 'none';
       tile.style.pointerEvents = abs > 4 ? 'none' : 'auto';
@@ -339,7 +343,7 @@
       tile.style.display = match ? '' : 'none';
       if (match) {
         tile.style.zIndex = 50;
-        tile.style.transform = 'translateX(0) rotateY(0deg) scale(1)';
+        tile.style.transform = 'translateX(0) translateY(0) rotateY(0deg) scale(1)';
         tile.style.opacity = '1';
         tile.style.filter = 'saturate(1)';
         tile.style.boxShadow = '0 0 24px 2px rgba(255,122,26,0.5)';
