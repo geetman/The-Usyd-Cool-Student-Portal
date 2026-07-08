@@ -482,15 +482,23 @@
   refreshMuteUI();
 
   /* ============================================================
-     CANVAS BACKGROUND — starfield + neon grid horizon
+     CANVAS BACKGROUND — starfield + PS3 XMB-style particle wave
      ============================================================ */
   (function backgroundCanvas() {
     var canvas = document.getElementById('bg-canvas');
     var ctx = canvas.getContext('2d');
     var w, h, dpr;
     var stars = [];
+    var waveParticles = [];
     var running = true;
-    var gridScroll = 0;
+
+    // Wave "ribbon" layers — each a translucent flowing band built from
+    // stacked sine components, like the XMB cross-media-bar backdrop.
+    var waveLayers = [
+      { baseFrac: 0.66, amp: 46, freq: 0.0021, freq2: 0.0047, speed: 0.00030, speed2: 0.00061, color: '255,122,26', alpha: 0.16 },
+      { baseFrac: 0.74, amp: 60, freq: 0.0015, freq2: 0.0035, speed: -0.00022, speed2: 0.00048, color: '58,220,224', alpha: 0.13 },
+      { baseFrac: 0.82, amp: 34, freq: 0.0027, freq2: 0.0060, speed: 0.00038, speed2: -0.00070, color: '255,122,26', alpha: 0.10 }
+    ];
 
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -502,6 +510,7 @@
       canvas.style.height = h + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       initStars();
+      initWaveParticles();
     }
 
     function initStars() {
@@ -540,42 +549,93 @@
       ctx.globalAlpha = 1;
     }
 
-    function drawGrid(t) {
-      var horizonY = h * 0.6;
-      var vanishX = w / 2;
+    // Height of a given wave layer at horizontal position x and time t.
+    function waveY(layer, x, t) {
+      var base = h * layer.baseFrac;
+      var a = Math.sin(x * layer.freq + t * layer.speed) * layer.amp;
+      var b = Math.sin(x * layer.freq2 + t * layer.speed2) * layer.amp * 0.35;
+      return base + a + b;
+    }
 
-      // horizon glow (orange, ties the two accents together)
-      var glow = ctx.createRadialGradient(vanishX, horizonY, 0, vanishX, horizonY, w * 0.5);
-      glow.addColorStop(0, 'rgba(255,122,26,0.15)');
-      glow.addColorStop(1, 'rgba(255,122,26,0)');
-      ctx.fillStyle = glow;
-      ctx.fillRect(0, horizonY - h * 0.15, w, h * 0.3);
-
-      ctx.strokeStyle = 'rgba(58,220,224,0.25)';
-      ctx.lineWidth = 1;
-
-      // converging verticals
-      var count = 14;
-      for (var i = -count; i <= count; i++) {
-        var xBottom = vanishX + i * (w / count) * 1.4;
+    function drawWaves(t) {
+      waveLayers.forEach(function (layer) {
         ctx.beginPath();
-        ctx.moveTo(vanishX, horizonY);
-        ctx.lineTo(xBottom, h);
-        ctx.stroke();
-      }
+        ctx.moveTo(0, h);
+        ctx.lineTo(0, waveY(layer, 0, t));
+        var step = Math.max(4, Math.floor(w / 220));
+        for (var x = 0; x <= w; x += step) {
+          ctx.lineTo(x, waveY(layer, x, t));
+        }
+        ctx.lineTo(w, h);
+        ctx.closePath();
 
-      // horizontal lines with forward-scroll animation
-      var rows = 8;
-      if (!reduceMotion) gridScroll = (gridScroll + 0.35) % (h - horizonY) / (h - horizonY);
-      for (var j = 0; j < rows; j++) {
-        var f = (j / rows + (reduceMotion ? 0 : gridScroll)) % 1;
-        var y = horizonY + Math.pow(f, 2.2) * (h - horizonY);
-        ctx.globalAlpha = 0.15 + f * 0.25;
+        var grad = ctx.createLinearGradient(0, h * layer.baseFrac - layer.amp, 0, h);
+        grad.addColorStop(0, 'rgba(' + layer.color + ',' + layer.alpha + ')');
+        grad.addColorStop(1, 'rgba(' + layer.color + ',0)');
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Crest highlight — a thin glowing line along the top of the ribbon.
         ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(w, y);
+        ctx.moveTo(0, waveY(layer, 0, t));
+        for (var xi = 0; xi <= w; xi += step) {
+          ctx.lineTo(xi, waveY(layer, xi, t));
+        }
+        ctx.strokeStyle = 'rgba(' + layer.color + ',' + Math.min(1, layer.alpha + 0.35) + ')';
+        ctx.lineWidth = 1.5;
         ctx.stroke();
+      });
+    }
+
+    // Small glowing particles that ride along the wave crests, drifting
+    // sideways and bobbing gently off the surface — the "particle" half
+    // of the classic PS3 XMB wave backdrop.
+    function initWaveParticles() {
+      waveParticles = [];
+      var count = Math.round((w / 1400) * 60);
+      for (var i = 0; i < count; i++) {
+        var layerIndex = Math.floor(Math.random() * waveLayers.length);
+        waveParticles.push({
+          x: Math.random() * w,
+          layerIndex: layerIndex,
+          drift: (Math.random() * 18 + 6) * (Math.random() < 0.5 ? -1 : 1),
+          lift: Math.random() * 26 + 4,
+          r: Math.random() * 1.6 + 0.8,
+          phase: Math.random() * Math.PI * 2,
+          period: Math.random() * 2.5 + 2,
+          cyan: Math.random() < 0.4
+        });
       }
+    }
+
+    function drawWaveParticles(t) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      waveParticles.forEach(function (p) {
+        if (!reduceMotion) {
+          p.x += p.drift / 60;
+          if (p.x < -10) p.x = w + 10;
+          if (p.x > w + 10) p.x = -10;
+        }
+        var layer = waveLayers[p.layerIndex];
+        var surfaceY = waveY(layer, p.x, t);
+        var bob = reduceMotion ? 0 : Math.sin((t / 1000) * (2 * Math.PI / p.period) + p.phase) * 4;
+        var y = surfaceY - p.lift + bob;
+        var twinkle = reduceMotion ? 0.6 : (0.4 + 0.6 * (0.5 + 0.5 * Math.sin((t / 1000) * (2 * Math.PI / p.period) + p.phase)));
+
+        ctx.globalAlpha = twinkle * 0.9;
+        ctx.fillStyle = p.cyan ? '#3ADCE0' : '#FF7A1A';
+        ctx.beginPath();
+        ctx.arc(p.x, y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        // soft glow halo
+        ctx.globalAlpha = twinkle * 0.25;
+        ctx.beginPath();
+        ctx.arc(p.x, y, p.r * 3.2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.restore();
       ctx.globalAlpha = 1;
     }
 
@@ -583,7 +643,8 @@
       if (!running) return;
       ctx.clearRect(0, 0, w, h);
       drawStars(t);
-      drawGrid(t);
+      drawWaves(t);
+      drawWaveParticles(t);
       requestAnimationFrame(frame);
     }
 
