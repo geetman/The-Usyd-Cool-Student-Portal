@@ -14,9 +14,9 @@
     unlocked: false,
     files: {
       hover: 'assets/sfx.mp3',
-      select: 'assets/sfx.mp3',
+      select: 'assets/sfx2.mp3',
       back: 'assets/sfx.mp3',
-      error: 'assets/sfx.mp3'
+      error: 'assets/wrong.mp3'
     },
     cache: {},
     _get: function (name) {
