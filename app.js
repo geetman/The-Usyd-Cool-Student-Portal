@@ -13,10 +13,10 @@
     muted: localStorage.getItem('usyd-portal-muted') === 'true',
     unlocked: false,
     files: {
-      hover: 'assets/hover.mp3',
-      select: 'assets/select.mp3',
-      back: 'assets/back.mp3',
-      error: 'assets/error.mp3'
+      hover: 'assets/sfx.mp3',
+      select: 'assets/sfx.mp3',
+      back: 'assets/sfx.mp3',
+      error: 'assets/sfx.mp3'
     },
     cache: {},
     _get: function (name) {
