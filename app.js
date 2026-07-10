@@ -7,16 +7,16 @@
   /* ============================================================
      AUDIO MANAGER
      Sound files are NOT bundled (copyright). Placeholders live at
-     assets/sounds/*.mp3 — missing files fail silently, no errors.
+     assets/*.mp3 — missing files fail silently, no errors.
      ============================================================ */
   var AudioManager = {
     muted: localStorage.getItem('usyd-portal-muted') === 'true',
     unlocked: false,
     files: {
-      hover: 'assets/sounds/hover.mp3',
-      select: 'assets/sounds/select.mp3',
-      back: 'assets/sounds/back.mp3',
-      error: 'assets/sounds/error.mp3'
+      hover: 'assets/hover.mp3',
+      select: 'assets/select.mp3',
+      back: 'assets/back.mp3',
+      error: 'assets/error.mp3'
     },
     cache: {},
     _get: function (name) {
