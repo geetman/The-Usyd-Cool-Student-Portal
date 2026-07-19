@@ -7,8 +7,6 @@ const PORTAL_DATA = [
     tileImage: "assets/courses-tile.png",
     links: [
       { name: "Sydney Student", url: "https://sydneystudent.sydney.edu.au", description: "Enrol, view timetable, results.", icon: "assets/sydney-student.png" },
-      { name: "Sydney Student (Direct Login)", url: "https://sydneystudent.sydney.edu.au/sitsvision/wrd/siw_portal.url?KPKXQKQIL0HONYGTvKMF-FJu3iiKi41E5TbdiIUma9AXcbb1BId-VbUHDiR46XfXYlA8zcbZgUsi9wLYgUtCZmUI3o5Op0DFkj4KBga5EvWE4BiHvmJqGRegd8IYpCUCCwFyenv4yC3iX7xvl4gyWG6vBmlsX8D9rBtvoEzZudr-RszMa9R0w6yQZibN8aMq9CoL9eN-Ua0DBy2kS8G8w0pWIPyRd2iHDwhjvBNBlexf1KSe6bdV_Ll8PXptnkd--ixGL8b5WOOkZIAo", description: "Direct deep link into your Sydney Student session.", icon: "assets/sydney-student-direct.png" },
-      { name: "Class Timetables", url: "https://timetable.sydney.edu.au", description: "Search unit of study timetables.", icon: "assets/timetable.png" },
       { name: "My Timetable", url: "https://timetable.sydney.edu.au/even/student?ss=b2aacf594063421eb80b2e7249ef80f0", description: "Your personal saved timetable view.", icon: "assets/my-timetable.png" },
       { name: "Unit of Study Outlines", url: "https://www.sydney.edu.au/units", description: "Official outlines for every unit.", icon: "assets/outlines.png" },
       { name: "Course & Unit Handbooks", url: "https://www.sydney.edu.au/handbooks", description: "Degree structures and unit handbooks.", icon: "assets/handbooks.png" }
@@ -35,8 +33,7 @@ const PORTAL_DATA = [
     tileImage: "assets/library-tile.png",
     links: [
       { name: "Library Home", url: "https://www.library.sydney.edu.au", description: "Catalogue, databases, guides.", icon: "assets/library.png" },
-      { name: "Library Catalogue (Primo)", url: "https://sydney.primo.exlibrisgroup.com/discovery/search?vid=61USYD_INST:sydney&lang=en", description: "Search books, journals, and articles.", icon: "assets/primo.png" },
-      { name: "Study Spaces", url: "https://www.library.sydney.edu.au/study", description: "Book a room or find a quiet desk.", icon: "assets/study.png" }
+      { name: "Library Catalogue (Primo)", url: "https://sydney.primo.exlibrisgroup.com/discovery/search?vid=61USYD_INST:sydney&lang=en", description: "Search books, journals, and articles.", icon: "assets/primo.png" }
     ]
   },
   {
@@ -45,8 +42,7 @@ const PORTAL_DATA = [
     description: "Webmail and your class timetable calendar.",
     tileImage: "assets/email-tile.png",
     links: [
-      { name: "Outlook Webmail", url: "https://outlook.office.com/mail", description: "Student email inbox.", icon: "assets/outlook.png" },
-      { name: "New Outlook (Web)", url: "https://outlook.cloud.microsoft/mail/", description: "The newer Outlook web experience.", icon: "assets/new-outlook.png" },
+      { name: "Outlook (Web)", url: "https://outlook.cloud.microsoft/mail/", description: "The newer Outlook web experience.", icon: "assets/new-outlook.png" },
       { name: "Outlook Calendar", url: "https://outlook.office.com/calendar", description: "Opens your Outlook calendar in a new tab.", icon: "assets/calendar.png" },
       { name: "OneDrive & SharePoint", url: "https://unisydneyedu-my.sharepoint.com/?wa=wsignin1%2E0", description: "Your cloud files and shared documents.", icon: "assets/onedrive.png" }
     ]
@@ -58,7 +54,7 @@ const PORTAL_DATA = [
     tileImage: "assets/clubs-tile.png",
     links: [
       { name: "USU Clubs", url: "https://usu.edu.au/clubs", description: "Find and join student societies.", icon: "assets/clubs.png" },
-      { name: "What's On", url: "https://www.sydney.edu.au/whats-on", description: "Upcoming university events.", icon: "assets/events.png" }
+      { name: "What's On (Event Calendar)", url: "https://whatson.sydney.edu.au", description: "Upcoming university events.", icon: "assets/events.png" }
     ]
   },
   {
@@ -78,7 +74,6 @@ const PORTAL_DATA = [
     description: "Wellbeing, careers, and financial help.",
     tileImage: "assets/support-tile.png",
     links: [
-      { name: "Student Wellbeing", url: "https://www.sydney.edu.au/students/student-support-services.html", description: "Counselling and support services.", icon: "assets/wellbeing.png" },
       { name: "Careers Centre", url: "https://www.sydney.edu.au/careers", description: "Jobs, internships, and career advice.", icon: "assets/careers.png" },
       { name: "Student Surveys", url: "https://student-surveys.sydney.edu.au/students/complete/", description: "Complete your unit of study surveys.", icon: "assets/student-surveys.png" },
       { name: "Ask a Question", url: "https://www.sydney.edu.au/students/ask-a-question.html", description: "Submit an enquiry to student services.", icon: "assets/ask-question.png" }
