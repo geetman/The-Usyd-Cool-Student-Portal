@@ -19,6 +19,7 @@ const PORTAL_DATA = [
     tileImage: "assets/lms-tile.png",
     links: [
       { name: "Canvas", url: "https://canvas.sydney.edu.au", description: "Unit of study sites, assignments, grades.", icon: "assets/canvas.png" },
+      { name: "ED", url: "https://edstem.org/au/dashboard", description: "The best tool to learn you cirriculumn.", icon: "assets/dashr.png" },
       { name: "Turnitin", url: "https://www.turnitin.com", description: "Assignment originality checking.", icon: "assets/turnitin.png" },
       { name: "Zoom", url: "https://uni-sydney.zoom.us/profile", description: "Join or manage your Zoom classes.", icon: "assets/zoom.png" },
       { name: "Microsoft Teams Chat", url: "https://m365.cloud.microsoft/chat?form=delve&origin=ProfileAboutMe&v=profile", description: "Chat and collaborate with staff and students.", icon: "assets/teams-chat.png" },
