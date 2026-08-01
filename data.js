@@ -77,6 +77,7 @@ const PORTAL_DATA = [
     links: [
       { name: "Careers Centre", url: "https://www.sydney.edu.au/careers", description: "Jobs, internships, and career advice.", icon: "assets/careers.png" },
       { name: "Student Surveys", url: "https://student-surveys.sydney.edu.au/students/complete/", description: "Complete your unit of study surveys.", icon: "assets/student-surveys.png" },
+      { name: "Mentorship", url: "https://mentoring.sydney.edu.au", description: "Mentorship for Usyd students", icon: "assets/student-surveys.png" },
       { name: "Ask a Question", url: "https://www.sydney.edu.au/students/ask-a-question.html", description: "Submit an enquiry to student services.", icon: "assets/ask-question.png" }
     ]
   },
